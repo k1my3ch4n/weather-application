@@ -1,4 +1,4 @@
-import axios from "axios";
+import { clientApi } from "./instance/client";
 
 interface WeatherDataType {
   temp: number;
@@ -6,11 +6,6 @@ interface WeatherDataType {
   humidity: number;
   description: string;
 }
-
-// todo : axios 인스턴스 분리
-const clientApi = axios.create({
-  baseURL: "/api",
-});
 
 export const getWeatherByCoords = async (
   lat: number,

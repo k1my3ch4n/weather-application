@@ -1,15 +1,10 @@
-import axios from "axios";
+import { clientApi } from "./instance/client";
 
 interface CoordinatesType {
   lat: number;
   lng: number;
   addressName: string;
 }
-
-// todo : axios 인스턴스 분리
-const clientApi = axios.create({
-  baseURL: "/api",
-});
 
 export const getCoordinatesByAddress = async (
   address: string
