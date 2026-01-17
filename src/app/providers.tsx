@@ -7,6 +7,8 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 5 * 60 * 1000,
       gcTime: 30 * 60 * 1000,
+      // todo : 임시로 재시도 비활성화
+      retry: false,
     },
   },
 });
