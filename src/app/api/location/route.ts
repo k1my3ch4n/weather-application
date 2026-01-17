@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import { kakaoServerApi } from "@shared/api/instance/server";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -8,14 +8,6 @@ export async function GET(request: NextRequest) {
   if (!address) {
     return NextResponse.json({ error: "주소를 입력해주세요" }, { status: 400 });
   }
-
-  // todo : axios 인스턴스 분리
-  const kakaoServerApi = axios.create({
-    baseURL: "https://dapi.kakao.com/v2/local",
-    headers: {
-      Authorization: `KakaoAK ${process.env.KAKAO_REST_API_KEY}`,
-    },
-  });
 
   try {
     const { data } = await kakaoServerApi.get("/search/address.json", {
