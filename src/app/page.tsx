@@ -2,20 +2,27 @@
 
 import { useState } from "react";
 import { useCoordinates } from "@features/location/api/useCoordinates";
+import { useWeather } from "@/features/weather/api/useWeather";
 
 export default function Home() {
   const [address, setAddress] = useState("서울특별시 강남구 역삼동");
   const [searchAddress, setSearchAddress] = useState<string | null>(null);
 
-  const { data, isLoading, error } = useCoordinates(searchAddress);
+  const { data: coords, isLoading: coordsLoading } =
+    useCoordinates(searchAddress);
+  const { data: weather, isLoading: weatherLoading } = useWeather(
+    coords ? { lat: coords.lat, lng: coords.lng } : null
+  );
 
   const handleSearch = () => {
     setSearchAddress(address);
   };
 
+  const isLoading = coordsLoading || weatherLoading;
+
   return (
     <div>
-      <h1>위치 좌표 조회</h1>
+      <h1>날씨 조회</h1>
 
       <div>
         <input
@@ -29,13 +36,21 @@ export default function Home() {
 
       {isLoading && <p>로딩 중...</p>}
 
-      {error && <p>{(error as Error).message}</p>}
-
-      {data && (
+      {coords && (
         <div>
-          <p>{data.addressName}</p>
-          <p>위도: {data.lat}</p>
-          <p>경도: {data.lng}</p>
+          <p>{coords.addressName}</p>
+          <p>
+            위도: {coords.lat} / 경도: {coords.lng}
+          </p>
+        </div>
+      )}
+
+      {weather && (
+        <div>
+          <p>온도: {weather.temp}°C</p>
+          <p>체감: {weather.feelsLike}°C</p>
+          <p>습도: {weather.humidity}%</p>
+          <p>날씨: {weather.description}</p>
         </div>
       )}
     </div>
