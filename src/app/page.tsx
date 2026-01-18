@@ -2,23 +2,61 @@
 
 import { useState } from "react";
 import { useCoordinates } from "@features/location/api/useCoordinates";
-import { useWeather } from "@/features/weather/api/useWeather";
+import { useWeather } from "@features/weather/api/useWeather";
+import { useForecast } from "@features/weather/api/useForecast";
+import { useFavorites } from "@features/favorites/hooks/useFavorites";
 
 export default function Home() {
   const [address, setAddress] = useState("서울특별시 강남구 역삼동");
   const [searchAddress, setSearchAddress] = useState<string | null>(null);
 
+  const { favorites, addFavorite, removeFavorite, isFavorite, isFull } =
+    useFavorites();
+
   const { data: coords, isLoading: coordsLoading } =
     useCoordinates(searchAddress);
+
   const { data: weather, isLoading: weatherLoading } = useWeather(
-    coords ? { lat: coords.lat, lng: coords.lng } : null
+    coords ? { lat: coords.lat, lng: coords.lng } : null,
+  );
+
+  const { data: forecast, isLoading: forecastLoading } = useForecast(
+    coords ? { lat: coords.lat, lng: coords.lng } : null,
   );
 
   const handleSearch = () => {
     setSearchAddress(address);
   };
 
-  const isLoading = coordsLoading || weatherLoading;
+  const handleAddFavorite = () => {
+    if (!coords || !searchAddress) {
+      return;
+    }
+
+    addFavorite({
+      lat: coords.lat,
+      lng: coords.lng,
+      addressName: searchAddress,
+    });
+  };
+
+  const handleRemoveCurrentFavorite = () => {
+    if (!coords) {
+      return;
+    }
+
+    const currentFavorite = favorites.find(
+      (favorite) => favorite.lat === coords.lat && favorite.lng === coords.lng,
+    );
+
+    if (currentFavorite) {
+      removeFavorite(currentFavorite.id);
+    }
+  };
+
+  const isCurrentFavorite = coords ? isFavorite(coords.lat, coords.lng) : false;
+
+  const isLoading = coordsLoading || weatherLoading || forecastLoading;
 
   return (
     <div>
@@ -36,23 +74,59 @@ export default function Home() {
 
       {isLoading && <p>로딩 중...</p>}
 
-      {coords && (
+      {weather && (
         <div>
-          <p>{coords.addressName}</p>
+          <h2>현재 날씨</h2>
+          <p>온도: {weather.temp}°C</p>
           <p>
-            위도: {coords.lat} / 경도: {coords.lng}
+            최저: {weather.tempMin}°C / 최고: {weather.tempMax}°C
           </p>
+          <p>체감: {weather.feelsLike}°C</p>
+          <p>날씨: {weather.description}</p>
+
+          {isCurrentFavorite ? (
+            <button onClick={handleRemoveCurrentFavorite}>
+              ⭐ 즐겨찾기 해제
+            </button>
+          ) : (
+            <button onClick={handleAddFavorite} disabled={isFull}>
+              ☆ 즐겨찾기 추가 {isFull && "(최대 6개)"}
+            </button>
+          )}
         </div>
       )}
 
-      {weather && (
+      {forecast && (
         <div>
-          <p>온도: {weather.temp}°C</p>
-          <p>체감: {weather.feelsLike}°C</p>
-          <p>습도: {weather.humidity}%</p>
-          <p>날씨: {weather.description}</p>
+          <h2>시간대별 날씨</h2>
+          <ul>
+            {forecast.hourlyTemps.map((item) => (
+              <li key={item.time}>
+                {item.time} : {item.temp}°C ({item.description})
+              </li>
+            ))}
+          </ul>
         </div>
       )}
+
+      {/* 즐겨찾기 목록 */}
+      <div>
+        <h2>즐겨찾기 ({favorites.length}/6)</h2>
+        {favorites.length === 0 ? (
+          <p>즐겨찾기한 장소가 없습니다</p>
+        ) : (
+          <ul>
+            {favorites.map(({ id, nickname }) => {
+              return (
+                <li key={id}>
+                  <span>{nickname}</span>
+                  <button onClick={() => removeFavorite(id)}>삭제</button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
