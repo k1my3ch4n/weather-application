@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useCoordinates } from "@features/location/api/useCoordinates";
 import { useWeather } from "@features/weather/api/useWeather";
 import { useForecast } from "@features/weather/api/useForecast";
-import { useFavorites } from "@features/favorites/api/useFavorites";
+import { useFavorites } from "@features/favorites/hooks/useFavorites";
 
 export default function Home() {
   const [address, setAddress] = useState("서울특별시 강남구 역삼동");
