@@ -21,20 +21,21 @@ export async function GET(request: NextRequest) {
     if (!main || !weather) {
       return NextResponse.json(
         { error: "날씨 데이터를 불러올 수 없습니다" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     return NextResponse.json({
       temp: main.temp,
       feelsLike: main.feels_like,
-      humidity: main.humidity,
       description: weather.description,
+      tempMin: main.temp_min,
+      tempMax: main.temp_max,
     });
   } catch {
     return NextResponse.json(
       { error: "날씨 정보를 가져오는데 실패했습니다" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
