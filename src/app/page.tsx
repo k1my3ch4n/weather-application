@@ -4,10 +4,14 @@ import { useState } from "react";
 import { useCoordinates } from "@features/location/api/useCoordinates";
 import { useWeather } from "@features/weather/api/useWeather";
 import { useForecast } from "@features/weather/api/useForecast";
+import { useFavorites } from "@features/favorites/api/useFavorites";
 
 export default function Home() {
   const [address, setAddress] = useState("서울특별시 강남구 역삼동");
   const [searchAddress, setSearchAddress] = useState<string | null>(null);
+
+  const { favorites, addFavorite, removeFavorite, isFavorite, isFull } =
+    useFavorites();
 
   const { data: coords, isLoading: coordsLoading } =
     useCoordinates(searchAddress);
@@ -23,6 +27,34 @@ export default function Home() {
   const handleSearch = () => {
     setSearchAddress(address);
   };
+
+  const handleAddFavorite = () => {
+    if (!coords || !searchAddress) {
+      return;
+    }
+
+    addFavorite({
+      lat: coords.lat,
+      lng: coords.lng,
+      addressName: searchAddress,
+    });
+  };
+
+  const handleRemoveCurrentFavorite = () => {
+    if (!coords) {
+      return;
+    }
+
+    const currentFavorite = favorites.find(
+      (favorite) => favorite.lat === coords.lat && favorite.lng === coords.lng,
+    );
+
+    if (currentFavorite) {
+      removeFavorite(currentFavorite.id);
+    }
+  };
+
+  const isCurrentFavorite = coords ? isFavorite(coords.lat, coords.lng) : false;
 
   const isLoading = coordsLoading || weatherLoading || forecastLoading;
 
@@ -51,6 +83,16 @@ export default function Home() {
           </p>
           <p>체감: {weather.feelsLike}°C</p>
           <p>날씨: {weather.description}</p>
+
+          {isCurrentFavorite ? (
+            <button onClick={handleRemoveCurrentFavorite}>
+              ⭐ 즐겨찾기 해제
+            </button>
+          ) : (
+            <button onClick={handleAddFavorite} disabled={isFull}>
+              ☆ 즐겨찾기 추가 {isFull && "(최대 6개)"}
+            </button>
+          )}
         </div>
       )}
 
@@ -66,6 +108,25 @@ export default function Home() {
           </ul>
         </div>
       )}
+
+      {/* 즐겨찾기 목록 */}
+      <div>
+        <h2>즐겨찾기 ({favorites.length}/6)</h2>
+        {favorites.length === 0 ? (
+          <p>즐겨찾기한 장소가 없습니다</p>
+        ) : (
+          <ul>
+            {favorites.map(({ id, nickname }) => {
+              return (
+                <li key={id}>
+                  <span>{nickname}</span>
+                  <button onClick={() => removeFavorite(id)}>삭제</button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
