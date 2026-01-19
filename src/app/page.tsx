@@ -7,7 +7,8 @@ import { useForecast } from "@features/weather/api/useForecast";
 import { useFavorites } from "@features/favorites/hooks/useFavorites";
 import { FavoriteCard } from "@features/favorites/ui/FavoriteCard";
 import { IconButton } from "@shared/ui/IconButton";
-import { InfoLabel } from "@/shared/ui/InfoLabel";
+import { InfoLabel } from "@shared/ui/InfoLabel";
+import { WeatherIcon } from "@shared/ui/WeatherIcon";
 
 // todo : 추후 사용자 위치 기반 초기 주소 설정
 const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
@@ -128,7 +129,11 @@ export default function Home() {
                 <p className="text-4xl font-bold">
                   {Math.round(weather.temp)}°C
                 </p>
-                <p className="text-lg mt-1">{weather.description}</p>
+                <WeatherIcon
+                  icon={weather.icon}
+                  description={weather.description}
+                  size="lg"
+                />
                 <p className="text-sm text-gray-500 mt-1">
                   <InfoLabel
                     label="최저"
@@ -163,7 +168,10 @@ export default function Home() {
                       <p className="text-lg font-bold">
                         {Math.round(item.temp)}°
                       </p>
-                      <p className="text-xs">{item.description}</p>
+                      <WeatherIcon
+                        icon={item.icon}
+                        description={item.description}
+                      />
                     </li>
                   ))}
                 </ul>

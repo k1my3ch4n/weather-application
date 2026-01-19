@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { IconButton } from "@shared/ui/IconButton";
 import { useWeather } from "@features/weather/api/useWeather";
-import { InfoLabel } from "@/shared/ui/InfoLabel";
+import { InfoLabel } from "@shared/ui/InfoLabel";
+import { WeatherIcon } from "@shared/ui/WeatherIcon";
 
 // todo : 타입 중복 제거
 interface Favorite {
@@ -119,7 +120,7 @@ export const FavoriteCard = ({
       {weather && (
         <div className="text-center">
           <p className="text-3xl font-bold">{Math.round(weather.temp)}°C</p>
-          <p className="text-md mt-1">{weather.description}</p>
+          <WeatherIcon icon={weather.icon} description={weather.description} />
           <p className="text-xs text-gray-500 mt-1">
             <InfoLabel
               label="최저"
