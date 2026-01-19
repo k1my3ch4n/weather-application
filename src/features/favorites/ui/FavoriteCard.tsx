@@ -3,19 +3,12 @@
 import { useState } from "react";
 import { IconButton } from "@shared/ui/IconButton";
 import { useWeather } from "@features/weather/api/useWeather";
-
-// todo : 타입 중복 제거
-interface Favorite {
-  id: string;
-  lat: number;
-  lng: number;
-  addressName: string;
-  nickname: string;
-  createdAt: number;
-}
+import { InfoLabel } from "@shared/ui/InfoLabel";
+import { WeatherIcon } from "@shared/ui/WeatherIcon";
+import { FavoriteType } from "../types";
 
 interface FavoriteCardProps {
-  favorite: Favorite;
+  favorite: FavoriteType;
   onRemove: (id: string) => void;
   onClick: (nickname: string) => void;
   onUpdateNickname: (id: string, nickname: string) => void;
@@ -117,17 +110,20 @@ export const FavoriteCard = ({
 
       {weather && (
         <div className="text-center">
+          <WeatherIcon icon={weather.icon} description={weather.description} />
           <p className="text-3xl font-bold">{Math.round(weather.temp)}°C</p>
-          <p className="text-md mt-1">{weather.description}</p>
           <p className="text-xs text-gray-500 mt-1">
-            최저{" "}
-            <span className="text-sm text-gray-700 font-bold">
-              {Math.round(weather.tempMin)}°
-            </span>{" "}
-            / 최고{" "}
-            <span className="text-sm text-gray-700 font-bold">
-              {Math.round(weather.tempMax)}°
-            </span>
+            <InfoLabel
+              label="최저"
+              value={`${Math.round(weather.tempMin)}°`}
+              size="sm"
+            />
+            {" / "}
+            <InfoLabel
+              label="최고"
+              value={`${Math.round(weather.tempMax)}°`}
+              size="sm"
+            />
           </p>
         </div>
       )}

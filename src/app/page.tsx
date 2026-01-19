@@ -6,11 +6,19 @@ import { useWeather } from "@features/weather/api/useWeather";
 import { useForecast } from "@features/weather/api/useForecast";
 import { useFavorites } from "@features/favorites/hooks/useFavorites";
 import { FavoriteCard } from "@features/favorites/ui/FavoriteCard";
+import { ForecastItem } from "@features/weather/ui/ForecastItem";
 import { IconButton } from "@shared/ui/IconButton";
+import { InfoLabel } from "@shared/ui/InfoLabel";
+import { WeatherIcon } from "@shared/ui/WeatherIcon";
+
+// todo : 추후 사용자 위치 기반 초기 주소 설정
+const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
 
 export default function Home() {
-  const [address, setAddress] = useState("서울특별시 강남구 역삼동");
-  const [searchAddress, setSearchAddress] = useState<string | null>(null);
+  const [address, setAddress] = useState<string>(DEFAULT_ADDRESS);
+  const [searchAddress, setSearchAddress] = useState<string | null>(
+    DEFAULT_ADDRESS,
+  );
 
   const {
     favorites,
@@ -73,10 +81,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen p-4">
-      <h1>날씨 조회</h1>
-
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
-        <div>
+        <div className="md:border-r md:border-gray-200 md:pr-6 min-w-0">
           <div>
             <input
               type="text"
@@ -91,45 +97,80 @@ export default function Home() {
 
           {weather && (
             <div>
-              <h2>현재 날씨</h2>
-              <p>온도: {weather.temp}°C</p>
-              <p>
-                최저: {weather.tempMin}°C / 최고: {weather.tempMax}°C
-              </p>
-              <p>체감: {weather.feelsLike}°C</p>
-              <p>날씨: {weather.description}</p>
+              <div className="flex items-center gap-2 mb-3">
+                {isCurrentFavorite ? (
+                  <IconButton
+                    icon="⭐"
+                    onClick={handleRemoveCurrentFavorite}
+                    variant="transparent"
+                    size="lg"
+                    title="즐겨찾기 해제"
+                  />
+                ) : (
+                  <IconButton
+                    icon="☆"
+                    onClick={handleAddFavorite}
+                    variant="transparent"
+                    size="lg"
+                    disabled={isFull}
+                    title={isFull ? "즐겨찾기 최대 6개" : "즐겨찾기 추가"}
+                  />
+                )}
+                <h2 className="font-semibold">{searchAddress}</h2>
+              </div>
 
-              {isCurrentFavorite ? (
-                <IconButton
-                  icon="⭐"
-                  onClick={handleRemoveCurrentFavorite}
-                  variant="transparent"
+              <div className="text-center">
+                <p className="text-sm text-gray-500 mb-1">
+                  {new Date().toLocaleDateString("ko-KR", {
+                    month: "long",
+                    day: "numeric",
+                    weekday: "short",
+                  })}
+                </p>
+                <WeatherIcon
+                  icon={weather.icon}
+                  description={weather.description}
                   size="lg"
-                  title="즐겨찾기 해제"
                 />
-              ) : (
-                <IconButton
-                  icon="☆"
-                  onClick={handleAddFavorite}
-                  variant="transparent"
-                  size="lg"
-                  disabled={isFull}
-                  title={isFull ? "즐겨찾기 최대 6개" : "즐겨찾기 추가"}
-                />
-              )}
+                <p className="text-4xl font-bold">
+                  {Math.round(weather.temp)}°C
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  <InfoLabel
+                    label="최저"
+                    value={`${Math.round(weather.tempMin)}°`}
+                    size="lg"
+                  />
+                  {" / "}
+                  <InfoLabel
+                    label="최고"
+                    value={`${Math.round(weather.tempMax)}°`}
+                    size="lg"
+                  />
+                  {" / "}
+                  <InfoLabel
+                    label="체감"
+                    value={`${Math.round(weather.feelsLike)}°`}
+                    size="lg"
+                  />
+                </p>
+              </div>
             </div>
           )}
 
           {forecast && (
-            <div>
-              <h2>시간대별 날씨</h2>
-              <ul>
-                {forecast.hourlyTemps.map((item) => (
-                  <li key={item.time}>
-                    {item.time} : {item.temp}°C ({item.description})
-                  </li>
-                ))}
-              </ul>
+            <div className="overflow-hidden mt-4">
+              <div className="overflow-x-auto pb-2">
+                <ul className="flex w-max">
+                  {forecast.hourlyTemps.map((item, index) => (
+                    <ForecastItem
+                      key={`${item.date}-${item.time}`}
+                      item={item}
+                      isFirst={index === 0}
+                    />
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
         </div>

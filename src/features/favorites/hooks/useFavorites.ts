@@ -1,24 +1,10 @@
 import { useState } from "react";
-
-interface Favorite {
-  id: string;
-  lat: number;
-  lng: number;
-  addressName: string;
-  nickname: string;
-  createdAt: number;
-}
-
-interface AddFavoriteParams {
-  lat: number;
-  lng: number;
-  addressName: string;
-}
+import { AddFavoriteParams, FavoriteType } from "../types";
 
 const LOCAL_STORAGE_KEY = "favorites";
 const MAX_FAVORITES = 6;
 
-const getInitialFavorites = (): Favorite[] => {
+const getInitialFavorites = (): FavoriteType[] => {
   if (typeof window === "undefined") return [];
 
   try {
@@ -31,9 +17,10 @@ const getInitialFavorites = (): Favorite[] => {
 
 // todo : 파일 내 alert 외부로 제거
 export const useFavorites = () => {
-  const [favorites, setFavorites] = useState<Favorite[]>(getInitialFavorites);
+  const [favorites, setFavorites] =
+    useState<FavoriteType[]>(getInitialFavorites);
 
-  const saveFavorites = (newFavorites: Favorite[]) => {
+  const saveFavorites = (newFavorites: FavoriteType[]) => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newFavorites));
     setFavorites(newFavorites);
   };
@@ -54,7 +41,7 @@ export const useFavorites = () => {
       return;
     }
 
-    const newFavorite: Favorite = {
+    const newFavorite: FavoriteType = {
       id: crypto.randomUUID(),
       ...location,
       nickname: location.addressName,

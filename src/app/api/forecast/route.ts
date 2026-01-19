@@ -8,6 +8,7 @@ interface ForecastItemType {
   };
   weather: {
     description: string;
+    icon: string;
   }[];
 }
 
@@ -40,11 +41,21 @@ export async function GET(request: NextRequest) {
     });
 
     const hourlyTemps = forecasts.map(
-      ({ dt_txt, main, weather }: ForecastItemType) => ({
-        time: dt_txt,
-        temp: main.temp,
-        description: weather[0]?.description || "",
-      }),
+      ({ dt_txt, main, weather }: ForecastItemType, index: number) => {
+        const date = new Date(dt_txt);
+        const hour = date.getHours();
+        const dateStr = `${date.getMonth() + 1}월 ${date.getDate()}일`;
+
+        const showDate = index === 0 || hour === 0;
+
+        return {
+          time: `${hour}시`,
+          date: showDate ? dateStr : null,
+          temp: main.temp,
+          description: weather[0]?.description || "",
+          icon: weather[0]?.icon || "",
+        };
+      },
     );
 
     return NextResponse.json({
