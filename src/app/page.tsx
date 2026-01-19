@@ -160,25 +160,31 @@ export default function Home() {
           {forecast && (
             <div className="overflow-hidden mt-4">
               <div className="overflow-x-auto pb-2">
-                <ul className="flex divide-x divide-gray-200 w-max">
-                  {forecast.hourlyTemps.map((item) => (
-                    <li
-                      key={item.time}
-                      className="flex-shrink-0 text-center px-4 first:pl-0 last:pr-0"
-                    >
-                      <p className="text-xs text-gray-700 font-bold h-4 mb-1">
-                        {item.date ?? ""}
-                      </p>
-                      <p className="text-sm text-gray-500">{item.time}</p>
-                      <WeatherIcon
-                        icon={item.icon}
-                        description={item.description}
-                      />
-                      <p className="text-lg font-bold">
-                        {Math.round(item.temp)}°
-                      </p>
-                    </li>
-                  ))}
+                <ul className="flex w-max">
+                  {forecast.hourlyTemps.map((item, index) => {
+                    const { date, time, temp, icon, description } = item;
+
+                    const dividerStyle =
+                      index !== 0
+                        ? date
+                          ? "border-l-2 border-gray-400"
+                          : "border-l border-gray-200"
+                        : "";
+
+                    return (
+                      <li
+                        key={time}
+                        className={`flex-shrink-0 text-center px-4 first:pl-0 last:pr-0 ${dividerStyle}`}
+                      >
+                        <p className="text-xs text-gray-700 font-bold h-4 mb-1">
+                          {date ?? ""}
+                        </p>
+                        <p className="text-sm text-gray-500">{time}</p>
+                        <WeatherIcon icon={icon} description={description} />
+                        <p className="text-lg font-bold">{Math.round(temp)}°</p>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>
