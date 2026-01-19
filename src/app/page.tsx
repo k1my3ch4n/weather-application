@@ -6,6 +6,7 @@ import { useWeather } from "@features/weather/api/useWeather";
 import { useForecast } from "@features/weather/api/useForecast";
 import { useFavorites } from "@features/favorites/hooks/useFavorites";
 import { FavoriteCard } from "@features/favorites/ui/FavoriteCard";
+import { ForecastItem } from "@features/weather/ui/ForecastItem";
 import { IconButton } from "@shared/ui/IconButton";
 import { InfoLabel } from "@shared/ui/InfoLabel";
 import { WeatherIcon } from "@shared/ui/WeatherIcon";
@@ -161,30 +162,13 @@ export default function Home() {
             <div className="overflow-hidden mt-4">
               <div className="overflow-x-auto pb-2">
                 <ul className="flex w-max">
-                  {forecast.hourlyTemps.map((item, index) => {
-                    const { date, time, temp, icon, description } = item;
-
-                    const dividerStyle =
-                      index !== 0
-                        ? date
-                          ? "border-l-2 border-gray-400"
-                          : "border-l border-gray-200"
-                        : "";
-
-                    return (
-                      <li
-                        key={time}
-                        className={`flex-shrink-0 text-center px-4 first:pl-0 last:pr-0 ${dividerStyle}`}
-                      >
-                        <p className="text-xs text-gray-700 font-bold h-4 mb-1">
-                          {date ?? ""}
-                        </p>
-                        <p className="text-sm text-gray-500">{time}</p>
-                        <WeatherIcon icon={icon} description={description} />
-                        <p className="text-lg font-bold">{Math.round(temp)}°</p>
-                      </li>
-                    );
-                  })}
+                  {forecast.hourlyTemps.map((item, index) => (
+                    <ForecastItem
+                      key={`${item.date}-${item.time}`}
+                      item={item}
+                      isFirst={index === 0}
+                    />
+                  ))}
                 </ul>
               </div>
             </div>
