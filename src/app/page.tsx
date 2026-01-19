@@ -162,10 +162,14 @@ export default function Home() {
               <div className="overflow-x-auto pb-2">
                 <ul className="flex divide-x divide-gray-200 w-max">
                   {forecast.hourlyTemps.map((item) => (
-                    <li key={item.time} className="flex-shrink-0 text-center">
-                      <p className="text-sm text-gray-500 font-bold">
-                        {new Date(item.time).getHours()}시
+                    <li
+                      key={item.time}
+                      className="flex-shrink-0 text-center px-4 first:pl-0 last:pr-0"
+                    >
+                      <p className="text-xs text-gray-700 font-bold h-4 mb-1">
+                        {item.date ?? ""}
                       </p>
+                      <p className="text-sm text-gray-500">{item.time}</p>
                       <WeatherIcon
                         icon={item.icon}
                         description={item.description}
