@@ -1,13 +1,5 @@
 import { WeatherIcon } from "@shared/ui/WeatherIcon";
-
-// todo : 타입 중복 제거
-interface HourlyTempType {
-  time: string;
-  date: string | null;
-  temp: number;
-  icon: string;
-  description: string;
-}
+import { HourlyTempType } from "../types";
 
 interface ForecastItemProps {
   item: HourlyTempType;
