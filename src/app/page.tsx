@@ -11,8 +11,14 @@ export default function Home() {
   const [address, setAddress] = useState("서울특별시 강남구 역삼동");
   const [searchAddress, setSearchAddress] = useState<string | null>(null);
 
-  const { favorites, addFavorite, removeFavorite, isFavorite, isFull } =
-    useFavorites();
+  const {
+    favorites,
+    addFavorite,
+    removeFavorite,
+    updateNickname,
+    isFavorite,
+    isFull,
+  } = useFavorites();
 
   const { data: coords, isLoading: coordsLoading } =
     useCoordinates(searchAddress);
@@ -131,6 +137,7 @@ export default function Home() {
                     favorite={favorite}
                     onRemove={() => removeFavorite(favorite.id)}
                     onClick={handleFavoriteClick}
+                    onUpdateNickname={updateNickname}
                   />
                 );
               })}
