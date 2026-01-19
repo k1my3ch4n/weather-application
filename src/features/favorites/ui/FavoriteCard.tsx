@@ -51,8 +51,8 @@ export const FavoriteCard = ({
       className="rounded-xl p-3 bg-white shadow-lg hover:shadow-xl transition-shadow"
       onClick={() => onClick(addressName)}
     >
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-1 mb-1">
+      <div className="flex items-center mb-2">
+        <div className="flex items-center gap-1">
           <IconButton
             icon="⭐"
             onClick={(e) => {
@@ -95,7 +95,9 @@ export const FavoriteCard = ({
             </div>
           ) : (
             <div className="flex items-center gap-1">
-              <h3 className="font-semibold truncate">{nickname}</h3>
+              <h3 className="font-semibold truncate leading-none">
+                {nickname}
+              </h3>
               <IconButton
                 icon="✎"
                 onClick={(e) => {
