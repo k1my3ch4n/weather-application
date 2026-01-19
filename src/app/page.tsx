@@ -158,13 +158,14 @@ export default function Home() {
           )}
 
           {forecast && (
-            <div className="overflow-hidden">
-              <h2>시간대별 날씨</h2>
+            <div className="overflow-hidden mt-4">
               <div className="overflow-x-auto pb-2">
-                <ul className="flex gap-4 w-max">
+                <ul className="flex divide-x divide-gray-200 w-max">
                   {forecast.hourlyTemps.map((item) => (
                     <li key={item.time} className="flex-shrink-0 text-center">
-                      <p className="text-sm text-gray-500">{item.time}</p>
+                      <p className="text-sm text-gray-500 font-bold">
+                        {new Date(item.time).getHours()}시
+                      </p>
                       <WeatherIcon
                         icon={item.icon}
                         description={item.description}
