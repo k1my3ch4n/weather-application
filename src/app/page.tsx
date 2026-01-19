@@ -5,6 +5,7 @@ import { useCoordinates } from "@features/location/api/useCoordinates";
 import { useWeather } from "@features/weather/api/useWeather";
 import { useForecast } from "@features/weather/api/useForecast";
 import { useFavorites } from "@features/favorites/hooks/useFavorites";
+import { FavoriteCard } from "@features/favorites/ui/FavoriteCard";
 
 export default function Home() {
   const [address, setAddress] = useState("서울특별시 강남구 역삼동");
@@ -117,13 +118,14 @@ export default function Home() {
           {favorites.length === 0 ? (
             <p>즐겨찾기한 장소가 없습니다</p>
           ) : (
-            <ul>
-              {favorites.map(({ id, nickname }) => {
+            <ul className="flex flex-col gap-4">
+              {favorites.map((favorite) => {
                 return (
-                  <li key={id}>
-                    <span>{nickname}</span>
-                    <button onClick={() => removeFavorite(id)}>삭제</button>
-                  </li>
+                  <FavoriteCard
+                    key={favorite.id}
+                    favorite={favorite}
+                    onRemove={() => removeFavorite(favorite.id)}
+                  />
                 );
               })}
             </ul>
