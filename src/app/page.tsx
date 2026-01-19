@@ -8,9 +8,14 @@ import { useFavorites } from "@features/favorites/hooks/useFavorites";
 import { FavoriteCard } from "@features/favorites/ui/FavoriteCard";
 import { IconButton } from "@shared/ui/IconButton";
 
+// todo : 추후 사용자 위치 기반 초기 주소 설정
+const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
+
 export default function Home() {
-  const [address, setAddress] = useState("서울특별시 강남구 역삼동");
-  const [searchAddress, setSearchAddress] = useState<string | null>(null);
+  const [address, setAddress] = useState<string>(DEFAULT_ADDRESS);
+  const [searchAddress, setSearchAddress] = useState<string | null>(
+    DEFAULT_ADDRESS,
+  );
 
   const {
     favorites,
@@ -73,8 +78,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen p-4">
-      <h1>날씨 조회</h1>
-
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
         <div>
           <div>
