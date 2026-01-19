@@ -1,6 +1,6 @@
 interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: React.ReactNode;
-  variant?: "primary" | "success" | "danger" | "neutral";
+  variant?: "primary" | "success" | "danger" | "neutral" | "transparent";
   size?: "sm" | "md" | "lg";
   title?: string;
 }
@@ -10,6 +10,7 @@ const variantStyles = {
   success: "bg-green-500 hover:bg-green-600 text-white",
   danger: "bg-red-500 hover:bg-red-600 text-white",
   neutral: "bg-gray-200 hover:bg-gray-300 text-gray-600",
+  transparent: "bg-transparent hover:bg-gray-100",
 };
 
 const sizeStyles = {
