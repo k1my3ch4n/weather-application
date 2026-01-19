@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { IconButton } from "@shared/ui/IconButton";
 import { useWeather } from "@features/weather/api/useWeather";
+import { InfoLabel } from "@/shared/ui/InfoLabel";
 
 // todo : 타입 중복 제거
 interface Favorite {
@@ -120,14 +121,17 @@ export const FavoriteCard = ({
           <p className="text-3xl font-bold">{Math.round(weather.temp)}°C</p>
           <p className="text-md mt-1">{weather.description}</p>
           <p className="text-xs text-gray-500 mt-1">
-            최저{" "}
-            <span className="text-sm text-gray-700 font-bold">
-              {Math.round(weather.tempMin)}°
-            </span>{" "}
-            / 최고{" "}
-            <span className="text-sm text-gray-700 font-bold">
-              {Math.round(weather.tempMax)}°
-            </span>
+            <InfoLabel
+              label="최저"
+              value={`${Math.round(weather.tempMin)}°`}
+              size="sm"
+            />
+            {" / "}
+            <InfoLabel
+              label="최고"
+              value={`${Math.round(weather.tempMax)}°`}
+              size="sm"
+            />
           </p>
         </div>
       )}
