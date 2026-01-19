@@ -5,19 +5,10 @@ import { IconButton } from "@shared/ui/IconButton";
 import { useWeather } from "@features/weather/api/useWeather";
 import { InfoLabel } from "@shared/ui/InfoLabel";
 import { WeatherIcon } from "@shared/ui/WeatherIcon";
-
-// todo : 타입 중복 제거
-interface Favorite {
-  id: string;
-  lat: number;
-  lng: number;
-  addressName: string;
-  nickname: string;
-  createdAt: number;
-}
+import { FavoriteType } from "../types";
 
 interface FavoriteCardProps {
-  favorite: Favorite;
+  favorite: FavoriteType;
   onRemove: (id: string) => void;
   onClick: (nickname: string) => void;
   onUpdateNickname: (id: string, nickname: string) => void;
