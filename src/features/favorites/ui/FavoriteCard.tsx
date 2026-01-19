@@ -15,15 +15,23 @@ interface Favorite {
 interface FavoriteCardProps {
   favorite: Favorite;
   onRemove: (id: string) => void;
+  onClick: (nickname: string) => void;
 }
 
-export const FavoriteCard = ({ favorite, onRemove }: FavoriteCardProps) => {
+export const FavoriteCard = ({
+  favorite,
+  onRemove,
+  onClick,
+}: FavoriteCardProps) => {
   const { id, lat, lng, nickname } = favorite;
 
   const { data: weather, isLoading } = useWeather({ lat, lng });
 
   return (
-    <div className="rounded-xl p-3 bg-white shadow-lg hover:shadow-xl transition-shadow">
+    <div
+      className="rounded-xl p-3 bg-white shadow-lg hover:shadow-xl transition-shadow"
+      onClick={() => onClick(nickname)}
+    >
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1 mb-1">
           <button

@@ -41,6 +41,11 @@ export default function Home() {
     });
   };
 
+  const handleFavoriteClick = (nickname: string) => {
+    setAddress(nickname);
+    setSearchAddress(nickname);
+  };
+
   const handleRemoveCurrentFavorite = () => {
     if (!coords) {
       return;
@@ -125,6 +130,7 @@ export default function Home() {
                     key={favorite.id}
                     favorite={favorite}
                     onRemove={() => removeFavorite(favorite.id)}
+                    onClick={handleFavoriteClick}
                   />
                 );
               })}
