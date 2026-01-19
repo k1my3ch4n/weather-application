@@ -1,13 +1,5 @@
+import { WeatherDataType } from "@features/weather/types";
 import { clientApi } from "./instance/client";
-
-interface WeatherDataType {
-  temp: number;
-  feelsLike: number;
-  icon: string;
-  description: string;
-  tempMin: number;
-  tempMax: number;
-}
 
 export const getWeatherByCoords = async (
   lat: number,
