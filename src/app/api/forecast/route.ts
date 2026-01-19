@@ -8,6 +8,7 @@ interface ForecastItemType {
   };
   weather: {
     description: string;
+    icon: string;
   }[];
 }
 
@@ -44,6 +45,7 @@ export async function GET(request: NextRequest) {
         time: dt_txt,
         temp: main.temp,
         description: weather[0]?.description || "",
+        icon: weather[0]?.icon || "",
       }),
     );
 

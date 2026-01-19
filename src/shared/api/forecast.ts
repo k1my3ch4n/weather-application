@@ -5,6 +5,7 @@ interface HourlyTemp {
   time: string;
   temp: number;
   description: string;
+  icon: string;
 }
 
 interface ForecastDataType {

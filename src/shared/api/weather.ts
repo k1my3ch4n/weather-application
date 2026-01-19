@@ -3,6 +3,7 @@ import { clientApi } from "./instance/client";
 interface WeatherDataType {
   temp: number;
   feelsLike: number;
+  icon: string;
   description: string;
   tempMin: number;
   tempMax: number;

@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
       temp: main.temp,
       feelsLike: main.feels_like,
       description: weather.description,
+      icon: weather.icon,
       tempMin: main.temp_min,
       tempMax: main.temp_max,
     });
