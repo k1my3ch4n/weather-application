@@ -1,13 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getForecastByCoords } from "@/shared/api/forecast";
+import { getForecastByCoords } from "@shared/api/forecast";
+import { CoordinatesType } from "@shared/types";
 
-// todo : 타입 중복 제거
-interface Coords {
-  lat: number;
-  lng: number;
-}
-
-export const useForecast = (coords: Coords | null) => {
+export const useForecast = (coords: CoordinatesType | null) => {
   return useQuery({
     queryKey: ["forecast", coords?.lat, coords?.lng],
     queryFn: () => getForecastByCoords(coords!.lat, coords!.lng),
