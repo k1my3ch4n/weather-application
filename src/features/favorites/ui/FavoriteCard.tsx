@@ -53,16 +53,16 @@ export const FavoriteCard = ({
     >
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1 mb-1">
-          <button
+          <IconButton
+            icon="⭐"
             onClick={(e) => {
               e.stopPropagation();
               onRemove(id);
             }}
-            className="text-yellow-400 hover:text-yellow-500 text-xl"
+            variant="transparent"
+            size="lg"
             title="즐겨찾기 해제"
-          >
-            ⭐
-          </button>
+          />
 
           {isEditing ? (
             <div className="flex items-center gap-1">

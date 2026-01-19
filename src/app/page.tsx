@@ -6,6 +6,7 @@ import { useWeather } from "@features/weather/api/useWeather";
 import { useForecast } from "@features/weather/api/useForecast";
 import { useFavorites } from "@features/favorites/hooks/useFavorites";
 import { FavoriteCard } from "@features/favorites/ui/FavoriteCard";
+import { IconButton } from "@shared/ui/IconButton";
 
 export default function Home() {
   const [address, setAddress] = useState("서울특별시 강남구 역삼동");
@@ -99,13 +100,22 @@ export default function Home() {
               <p>날씨: {weather.description}</p>
 
               {isCurrentFavorite ? (
-                <button onClick={handleRemoveCurrentFavorite}>
-                  ⭐ 즐겨찾기 해제
-                </button>
+                <IconButton
+                  icon="⭐"
+                  onClick={handleRemoveCurrentFavorite}
+                  variant="transparent"
+                  size="lg"
+                  title="즐겨찾기 해제"
+                />
               ) : (
-                <button onClick={handleAddFavorite} disabled={isFull}>
-                  ☆ 즐겨찾기 추가 {isFull && "(최대 6개)"}
-                </button>
+                <IconButton
+                  icon="☆"
+                  onClick={handleAddFavorite}
+                  variant="transparent"
+                  size="lg"
+                  disabled={isFull}
+                  title={isFull ? "즐겨찾기 최대 6개" : "즐겨찾기 추가"}
+                />
               )}
             </div>
           )}
