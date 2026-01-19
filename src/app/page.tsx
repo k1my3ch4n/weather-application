@@ -79,7 +79,7 @@ export default function Home() {
   return (
     <div className="min-h-screen p-4">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
-        <div>
+        <div className="md:border-r md:border-gray-200 md:pr-6">
           <div>
             <input
               type="text"
@@ -94,32 +94,57 @@ export default function Home() {
 
           {weather && (
             <div>
-              <h2>현재 날씨</h2>
-              <p>온도: {weather.temp}°C</p>
-              <p>
-                최저: {weather.tempMin}°C / 최고: {weather.tempMax}°C
-              </p>
-              <p>체감: {weather.feelsLike}°C</p>
-              <p>날씨: {weather.description}</p>
+              <div className="flex items-center gap-2 mb-3">
+                {isCurrentFavorite ? (
+                  <IconButton
+                    icon="⭐"
+                    onClick={handleRemoveCurrentFavorite}
+                    variant="transparent"
+                    size="lg"
+                    title="즐겨찾기 해제"
+                  />
+                ) : (
+                  <IconButton
+                    icon="☆"
+                    onClick={handleAddFavorite}
+                    variant="transparent"
+                    size="lg"
+                    disabled={isFull}
+                    title={isFull ? "즐겨찾기 최대 6개" : "즐겨찾기 추가"}
+                  />
+                )}
+                <h2 className="font-semibold">{searchAddress}</h2>
+              </div>
 
-              {isCurrentFavorite ? (
-                <IconButton
-                  icon="⭐"
-                  onClick={handleRemoveCurrentFavorite}
-                  variant="transparent"
-                  size="lg"
-                  title="즐겨찾기 해제"
-                />
-              ) : (
-                <IconButton
-                  icon="☆"
-                  onClick={handleAddFavorite}
-                  variant="transparent"
-                  size="lg"
-                  disabled={isFull}
-                  title={isFull ? "즐겨찾기 최대 6개" : "즐겨찾기 추가"}
-                />
-              )}
+              <div className="text-center">
+                <p className="text-sm text-gray-500 mb-1">
+                  {new Date().toLocaleDateString("ko-KR", {
+                    month: "long",
+                    day: "numeric",
+                    weekday: "short",
+                  })}
+                </p>
+                <p className="text-4xl font-bold">
+                  {Math.round(weather.temp)}°C
+                </p>
+                <p className="text-lg mt-1">{weather.description}</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  최저{" "}
+                  <span className="text-base text-gray-700 font-bold">
+                    {Math.round(weather.tempMin)}°
+                  </span>{" "}
+                  / 최고{" "}
+                  <span className="text-base text-gray-700 font-bold">
+                    {Math.round(weather.tempMax)}°
+                  </span>
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  체감{" "}
+                  <span className="text-base text-gray-700 font-bold">
+                    {Math.round(weather.feelsLike)}°
+                  </span>
+                </p>
+              </div>
             </div>
           )}
 
