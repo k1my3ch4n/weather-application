@@ -119,8 +119,8 @@ export const FavoriteCard = ({
 
       {weather && (
         <div className="text-center">
-          <p className="text-3xl font-bold">{Math.round(weather.temp)}°C</p>
           <WeatherIcon icon={weather.icon} description={weather.description} />
+          <p className="text-3xl font-bold">{Math.round(weather.temp)}°C</p>
           <p className="text-xs text-gray-500 mt-1">
             <InfoLabel
               label="최저"

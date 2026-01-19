@@ -126,14 +126,14 @@ export default function Home() {
                     weekday: "short",
                   })}
                 </p>
-                <p className="text-4xl font-bold">
-                  {Math.round(weather.temp)}°C
-                </p>
                 <WeatherIcon
                   icon={weather.icon}
                   description={weather.description}
                   size="lg"
                 />
+                <p className="text-4xl font-bold">
+                  {Math.round(weather.temp)}°C
+                </p>
                 <p className="text-sm text-gray-500 mt-1">
                   <InfoLabel
                     label="최저"
@@ -165,13 +165,13 @@ export default function Home() {
                   {forecast.hourlyTemps.map((item) => (
                     <li key={item.time} className="flex-shrink-0 text-center">
                       <p className="text-sm text-gray-500">{item.time}</p>
-                      <p className="text-lg font-bold">
-                        {Math.round(item.temp)}°
-                      </p>
                       <WeatherIcon
                         icon={item.icon}
                         description={item.description}
                       />
+                      <p className="text-lg font-bold">
+                        {Math.round(item.temp)}°
+                      </p>
                     </li>
                   ))}
                 </ul>
