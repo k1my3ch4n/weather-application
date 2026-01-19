@@ -80,7 +80,7 @@ export default function Home() {
   return (
     <div className="min-h-screen p-4">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
-        <div className="md:border-r md:border-gray-200 md:pr-6">
+        <div className="md:border-r md:border-gray-200 md:pr-6 min-w-0">
           <div>
             <input
               type="text"
@@ -153,15 +153,21 @@ export default function Home() {
           )}
 
           {forecast && (
-            <div>
+            <div className="overflow-hidden">
               <h2>시간대별 날씨</h2>
-              <ul>
-                {forecast.hourlyTemps.map((item) => (
-                  <li key={item.time}>
-                    {item.time} : {item.temp}°C ({item.description})
-                  </li>
-                ))}
-              </ul>
+              <div className="overflow-x-auto pb-2">
+                <ul className="flex gap-4 w-max">
+                  {forecast.hourlyTemps.map((item) => (
+                    <li key={item.time} className="flex-shrink-0 text-center">
+                      <p className="text-sm text-gray-500">{item.time}</p>
+                      <p className="text-lg font-bold">
+                        {Math.round(item.temp)}°
+                      </p>
+                      <p className="text-xs">{item.description}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
         </div>
