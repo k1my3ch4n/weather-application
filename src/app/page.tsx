@@ -10,6 +10,7 @@ import { ForecastItem } from "@features/weather/ui/ForecastItem";
 import { IconButton } from "@shared/ui/IconButton";
 import { InfoLabel } from "@shared/ui/InfoLabel";
 import { WeatherIcon } from "@shared/ui/WeatherIcon";
+import { CurrentWeather } from "@/features/weather/ui/CurrentWeather";
 
 // todo : 추후 사용자 위치 기반 초기 주소 설정
 const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
@@ -94,63 +95,15 @@ export default function Home() {
 
         {isLoading && <p>로딩 중...</p>}
 
-        {weather && (
-          <div className="text-center">
-            <div className="flex items-center gap-2 mb-3">
-              {isCurrentFavorite ? (
-                <IconButton
-                  icon="⭐"
-                  onClick={handleRemoveCurrentFavorite}
-                  variant="transparent"
-                  size="lg"
-                  title="즐겨찾기 해제"
-                />
-              ) : (
-                <IconButton
-                  icon="☆"
-                  onClick={handleAddFavorite}
-                  variant="transparent"
-                  size="lg"
-                  disabled={isFull}
-                  title={isFull ? "즐겨찾기 최대 6개" : "즐겨찾기 추가"}
-                />
-              )}
-              <h2 className="font-semibold">{searchAddress}</h2>
-            </div>
-
-            <p className="text-sm text-gray-500 mb-1">
-              {new Date().toLocaleDateString("ko-KR", {
-                month: "long",
-                day: "numeric",
-                weekday: "short",
-              })}
-            </p>
-            <WeatherIcon
-              icon={weather.icon}
-              description={weather.description}
-              size="lg"
-            />
-            <p className="text-4xl font-bold">{Math.round(weather.temp)}°C</p>
-            <p className="text-sm text-gray-500 mt-1">
-              <InfoLabel
-                label="최저"
-                value={`${Math.round(weather.tempMin)}°`}
-                size="lg"
-              />
-              {" / "}
-              <InfoLabel
-                label="최고"
-                value={`${Math.round(weather.tempMax)}°`}
-                size="lg"
-              />
-              {" / "}
-              <InfoLabel
-                label="체감"
-                value={`${Math.round(weather.feelsLike)}°`}
-                size="lg"
-              />
-            </p>
-          </div>
+        {weather && searchAddress && (
+          <CurrentWeather
+            addressName={searchAddress}
+            weather={weather}
+            isFavorite={isCurrentFavorite}
+            isFull={isFull}
+            onAddFavorite={handleAddFavorite}
+            onRemoveCurrentFavorite={handleRemoveCurrentFavorite}
+          />
         )}
 
         {forecast && (
