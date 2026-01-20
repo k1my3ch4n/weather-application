@@ -5,9 +5,9 @@ import { useCoordinates } from "@features/location/api/useCoordinates";
 import { useWeather } from "@features/weather/api/useWeather";
 import { useForecast } from "@features/weather/api/useForecast";
 import { useFavorites } from "@features/favorites/hooks/useFavorites";
-import { FavoriteCard } from "@features/favorites/ui/FavoriteCard";
 import { CurrentWeather } from "@features/weather/ui/CurrentWeather";
 import { HourlyForecast } from "@features/weather/ui/HourlyForecast";
+import { FavoriteList } from "@features/favorites/ui/FavoriteList";
 
 // todo : 추후 사용자 위치 기반 초기 주소 설정
 const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
@@ -106,26 +106,12 @@ export default function Home() {
         {forecast && <HourlyForecast forecast={forecast} />}
       </div>
 
-      <div className="border-t pt-4">
-        <h2>즐겨찾기 ({favorites.length}/6)</h2>
-        {favorites.length === 0 ? (
-          <p>즐겨찾기한 장소가 없습니다</p>
-        ) : (
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {favorites.map((favorite) => {
-              return (
-                <FavoriteCard
-                  key={favorite.id}
-                  favorite={favorite}
-                  onRemove={() => removeFavorite(favorite.id)}
-                  onClick={handleFavoriteClick}
-                  onUpdateNickname={updateNickname}
-                />
-              );
-            })}
-          </ul>
-        )}
-      </div>
+      <FavoriteList
+        favorites={favorites}
+        onRemove={removeFavorite}
+        onClick={handleFavoriteClick}
+        onUpdateNickname={updateNickname}
+      />
     </div>
   );
 }
