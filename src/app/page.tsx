@@ -6,11 +6,8 @@ import { useWeather } from "@features/weather/api/useWeather";
 import { useForecast } from "@features/weather/api/useForecast";
 import { useFavorites } from "@features/favorites/hooks/useFavorites";
 import { FavoriteCard } from "@features/favorites/ui/FavoriteCard";
-import { ForecastItem } from "@features/weather/ui/ForecastItem";
-import { IconButton } from "@shared/ui/IconButton";
-import { InfoLabel } from "@shared/ui/InfoLabel";
-import { WeatherIcon } from "@shared/ui/WeatherIcon";
-import { CurrentWeather } from "@/features/weather/ui/CurrentWeather";
+import { CurrentWeather } from "@features/weather/ui/CurrentWeather";
+import { HourlyForecast } from "@features/weather/ui/HourlyForecast";
 
 // todo : 추후 사용자 위치 기반 초기 주소 설정
 const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
@@ -106,17 +103,7 @@ export default function Home() {
           />
         )}
 
-        {forecast && (
-          <div className="overflow-hidden mt-4">
-            <div className="overflow-x-auto pb-2">
-              <ul className="flex w-max">
-                {forecast.hourlyTemps.map((item, index) => (
-                  <ForecastItem key={index} item={item} isFirst={index === 0} />
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
+        {forecast && <HourlyForecast forecast={forecast} />}
       </div>
 
       <div className="border-t pt-4">
