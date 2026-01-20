@@ -8,15 +8,21 @@ import { useFavorites } from "@features/favorites/hooks/useFavorites";
 import { CurrentWeather } from "@features/weather/ui/CurrentWeather";
 import { HourlyForecast } from "@features/weather/ui/HourlyForecast";
 import { FavoriteList } from "@features/favorites/ui/FavoriteList";
+import { LocationSearchModal } from "@/features/location/ui/LocationSearchModal";
 
 // todo : 추후 사용자 위치 기반 초기 주소 설정
 const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
 
 export default function Home() {
-  const [address, setAddress] = useState<string>(DEFAULT_ADDRESS);
   const [searchAddress, setSearchAddress] = useState<string | null>(
     DEFAULT_ADDRESS,
   );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleLocationSelect = (address: string) => {
+    setSearchAddress(address);
+  };
 
   const {
     favorites,
@@ -38,10 +44,6 @@ export default function Home() {
     coords ? { lat: coords.lat, lng: coords.lng } : null,
   );
 
-  const handleSearch = () => {
-    setSearchAddress(address);
-  };
-
   const handleAddFavorite = () => {
     if (!coords || !searchAddress) {
       return;
@@ -55,7 +57,6 @@ export default function Home() {
   };
 
   const handleFavoriteClick = (nickname: string) => {
-    setAddress(nickname);
     setSearchAddress(nickname);
   };
 
@@ -75,23 +76,12 @@ export default function Home() {
 
   const isCurrentFavorite = coords ? isFavorite(coords.lat, coords.lng) : false;
 
+  // todo : 추후 스켈레톤 추가 예정
   const isLoading = coordsLoading || weatherLoading || forecastLoading;
 
   return (
     <div className="min-h-screen p-4 max-w-4xl mx-auto">
       <div className="mb-6">
-        <div className="mb-4">
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="지역명 입력"
-          />
-          <button onClick={handleSearch}>검색</button>
-        </div>
-
-        {isLoading && <p>로딩 중...</p>}
-
         {weather && searchAddress && (
           <CurrentWeather
             addressName={searchAddress}
@@ -100,6 +90,7 @@ export default function Home() {
             isFull={isFull}
             onAddFavorite={handleAddFavorite}
             onRemoveCurrentFavorite={handleRemoveCurrentFavorite}
+            onSearchClick={() => setIsModalOpen(true)}
           />
         )}
 
@@ -111,6 +102,12 @@ export default function Home() {
         onRemove={removeFavorite}
         onClick={handleFavoriteClick}
         onUpdateNickname={updateNickname}
+      />
+
+      <LocationSearchModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSelect={handleLocationSelect}
       />
     </div>
   );
