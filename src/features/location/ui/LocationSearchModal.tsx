@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import koreaLocations from "@shared/data/korea-locations.json";
 
 interface LocationSearchModalProps {
   isOpen: boolean;
@@ -15,6 +16,16 @@ export const LocationSearchModal = ({
 }: LocationSearchModalProps) => {
   const [searchValue, setSearchValue] = useState("");
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+
+  const suggestLocation = useMemo(() => {
+    if (searchValue.length < 1) return [];
+
+    const filteredLocation = koreaLocations.entries.filter((entry) =>
+      entry.includes(searchValue),
+    );
+
+    return filteredLocation;
+  }, [searchValue]);
 
   const handleConfirm = () => {
     if (selectedAddress) {
@@ -32,6 +43,11 @@ export const LocationSearchModal = ({
   const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
     setSelectedAddress(null);
+  };
+
+  const handleSuggestionClick = (address: string) => {
+    setSelectedAddress(address);
+    setSearchValue(address);
   };
 
   if (!isOpen) {
@@ -54,6 +70,28 @@ export const LocationSearchModal = ({
   focus:ring-blue-500"
           autoFocus
         />
+
+        {!selectedAddress && suggestLocation.length > 0 && (
+          <ul className="mt-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg">
+            {suggestLocation.map((suggestion, index) => (
+              <li
+                key={index}
+                onClick={() => handleSuggestionClick(suggestion)}
+                className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${
+                  selectedAddress === suggestion ? "bg-blue-100" : ""
+                }`}
+              >
+                {suggestion}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {!selectedAddress &&
+          searchValue.length >= 1 &&
+          suggestLocation.length === 0 && (
+            <p className="mt-2 text-sm text-gray-500">검색 결과가 없습니다</p>
+          )}
 
         <div className="flex justify-end gap-2 mt-6">
           <button
