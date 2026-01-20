@@ -1,29 +1,55 @@
-import { useState } from "react";
+import { useSyncExternalStore } from "react";
 import { AddFavoriteParams, FavoriteType } from "../types";
 
 const LOCAL_STORAGE_KEY = "favorites";
 const MAX_FAVORITES = 6;
 
-const getInitialFavorites = (): FavoriteType[] => {
-  if (typeof window === "undefined") return [];
+let cachedFavorites: FavoriteType[] = [];
+let cachedString = "";
 
+const subscribe = (callback: () => void) => {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
+};
+
+const getSnapshot = (): FavoriteType[] => {
   try {
-    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return saved ? JSON.parse(saved) : [];
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY) || "[]";
+
+    if (saved !== cachedString) {
+      cachedString = saved;
+      cachedFavorites = JSON.parse(saved);
+    }
+
+    return cachedFavorites;
   } catch {
-    return [];
+    return cachedFavorites;
   }
+};
+
+const emptyArray: FavoriteType[] = [];
+
+const getServerSnapshot = (): FavoriteType[] => {
+  return emptyArray;
+};
+
+const saveFavorites = (newFavorites: FavoriteType[]) => {
+  const newString = JSON.stringify(newFavorites);
+
+  cachedString = newString;
+  cachedFavorites = newFavorites;
+
+  localStorage.setItem(LOCAL_STORAGE_KEY, newString);
+  window.dispatchEvent(new Event("storage"));
 };
 
 // todo : 파일 내 alert 외부로 제거
 export const useFavorites = () => {
-  const [favorites, setFavorites] =
-    useState<FavoriteType[]>(getInitialFavorites);
-
-  const saveFavorites = (newFavorites: FavoriteType[]) => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newFavorites));
-    setFavorites(newFavorites);
-  };
+  const favorites = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   const addFavorite = (location: AddFavoriteParams) => {
     if (favorites.length >= MAX_FAVORITES) {
@@ -49,7 +75,6 @@ export const useFavorites = () => {
     };
 
     saveFavorites([...favorites, newFavorite]);
-    return;
   };
 
   const removeFavorite = (id: string) => {
