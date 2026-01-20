@@ -13,7 +13,6 @@ import { FavoriteList } from "@features/favorites/ui/FavoriteList";
 const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
 
 export default function Home() {
-  const [address, setAddress] = useState<string>(DEFAULT_ADDRESS);
   const [searchAddress, setSearchAddress] = useState<string | null>(
     DEFAULT_ADDRESS,
   );
@@ -38,10 +37,6 @@ export default function Home() {
     coords ? { lat: coords.lat, lng: coords.lng } : null,
   );
 
-  const handleSearch = () => {
-    setSearchAddress(address);
-  };
-
   const handleAddFavorite = () => {
     if (!coords || !searchAddress) {
       return;
@@ -55,7 +50,6 @@ export default function Home() {
   };
 
   const handleFavoriteClick = (nickname: string) => {
-    setAddress(nickname);
     setSearchAddress(nickname);
   };
 
@@ -80,18 +74,6 @@ export default function Home() {
   return (
     <div className="min-h-screen p-4 max-w-4xl mx-auto">
       <div className="mb-6">
-        <div className="mb-4">
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="지역명 입력"
-          />
-          <button onClick={handleSearch}>검색</button>
-        </div>
-
-        {isLoading && <p>로딩 중...</p>}
-
         {weather && searchAddress && (
           <CurrentWeather
             addressName={searchAddress}
