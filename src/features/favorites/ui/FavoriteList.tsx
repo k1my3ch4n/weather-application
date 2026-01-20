@@ -18,7 +18,12 @@ export const FavoriteList = ({
 }: FavoriteListProps) => {
   return (
     <div className="border-t pt-4">
-      <h2>즐겨찾기 ({favorites.length}/6)</h2>
+      <h2 className="text-lg font-bold">
+        즐겨찾기{" "}
+        <span className="text-base font-normal">
+          ( {favorites.length} / 6 )
+        </span>
+      </h2>
       {favorites.length === 0 ? (
         <p>즐겨찾기한 장소가 없습니다</p>
       ) : (
