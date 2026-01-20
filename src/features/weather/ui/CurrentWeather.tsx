@@ -12,6 +12,7 @@ interface CurrentWeatherProps {
   isFull: boolean;
   onAddFavorite: () => void;
   onRemoveCurrentFavorite: () => void;
+  onSearchClick: () => void;
 }
 
 export const CurrentWeather = ({
@@ -21,8 +22,8 @@ export const CurrentWeather = ({
   isFull,
   onAddFavorite,
   onRemoveCurrentFavorite,
+  onSearchClick,
 }: CurrentWeatherProps) => {
-  // todo : 날짜 포맷 분리
   const today = new Date().toLocaleDateString("ko-KR", {
     month: "long",
     day: "numeric",
@@ -51,6 +52,14 @@ export const CurrentWeather = ({
           />
         )}
         <h2 className="font-semibold">{addressName}</h2>
+
+        <IconButton
+          icon="🔍"
+          onClick={onSearchClick}
+          variant="transparent"
+          size="sm"
+          title="위치 검색"
+        />
       </div>
 
       <div className="text-center">
