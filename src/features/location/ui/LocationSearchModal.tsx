@@ -50,6 +50,10 @@ export const LocationSearchModal = ({
     setSearchValue(address);
   };
 
+  const hasSuggestLocation = !selectedAddress && suggestLocation.length > 0;
+  const noResult =
+    !selectedAddress && searchValue.length >= 1 && suggestLocation.length === 0;
+
   if (!isOpen) {
     return null;
   }
@@ -71,7 +75,7 @@ export const LocationSearchModal = ({
           autoFocus
         />
 
-        {!selectedAddress && suggestLocation.length > 0 && (
+        {hasSuggestLocation && (
           <ul className="mt-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg">
             {suggestLocation.map((suggestion, index) => (
               <li
@@ -87,11 +91,9 @@ export const LocationSearchModal = ({
           </ul>
         )}
 
-        {!selectedAddress &&
-          searchValue.length >= 1 &&
-          suggestLocation.length === 0 && (
-            <p className="mt-2 text-sm text-gray-500">검색 결과가 없습니다</p>
-          )}
+        {noResult && (
+          <p className="mt-2 text-sm text-gray-500">검색 결과가 없습니다</p>
+        )}
 
         <div className="flex justify-end gap-2 mt-6">
           <button
