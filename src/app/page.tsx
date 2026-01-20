@@ -8,6 +8,7 @@ import { useFavorites } from "@features/favorites/hooks/useFavorites";
 import { CurrentWeather } from "@features/weather/ui/CurrentWeather";
 import { HourlyForecast } from "@features/weather/ui/HourlyForecast";
 import { FavoriteList } from "@features/favorites/ui/FavoriteList";
+import { LocationSearchModal } from "@/features/location/ui/LocationSearchModal";
 
 // todo : 추후 사용자 위치 기반 초기 주소 설정
 const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
@@ -16,6 +17,12 @@ export default function Home() {
   const [searchAddress, setSearchAddress] = useState<string | null>(
     DEFAULT_ADDRESS,
   );
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleLocationSelect = (address: string) => {
+    setSearchAddress(address);
+  };
 
   const {
     favorites,
@@ -69,6 +76,7 @@ export default function Home() {
 
   const isCurrentFavorite = coords ? isFavorite(coords.lat, coords.lng) : false;
 
+  // todo : 추후 스켈레톤 추가 예정
   const isLoading = coordsLoading || weatherLoading || forecastLoading;
 
   return (
@@ -82,6 +90,7 @@ export default function Home() {
             isFull={isFull}
             onAddFavorite={handleAddFavorite}
             onRemoveCurrentFavorite={handleRemoveCurrentFavorite}
+            onSearchClick={() => setIsModalOpen(true)}
           />
         )}
 
@@ -93,6 +102,12 @@ export default function Home() {
         onRemove={removeFavorite}
         onClick={handleFavoriteClick}
         onUpdateNickname={updateNickname}
+      />
+
+      <LocationSearchModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSelect={handleLocationSelect}
       />
     </div>
   );
