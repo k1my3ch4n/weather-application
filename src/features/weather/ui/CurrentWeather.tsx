@@ -38,7 +38,7 @@ export const CurrentWeather = ({
             icon="⭐"
             onClick={onRemoveCurrentFavorite}
             variant="transparent"
-            size="lg"
+            size="xl"
             title="즐겨찾기 해제"
           />
         ) : (
@@ -46,12 +46,12 @@ export const CurrentWeather = ({
             icon="☆"
             onClick={onAddFavorite}
             variant="transparent"
-            size="lg"
+            size="xl"
             disabled={isFull}
             title={isFull ? "즐겨찾기 최대 6개" : "즐겨찾기 추가"}
           />
         )}
-        <h2 className="font-semibold">{addressName}</h2>
+        <h1 className="text-xl font-semibold">{addressName}</h1>
 
         <IconButton
           icon="🔍"
