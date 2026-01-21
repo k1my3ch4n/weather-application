@@ -6,6 +6,7 @@ import { useWeather } from "@features/weather/api/useWeather";
 import { InfoLabel } from "@shared/ui/InfoLabel";
 import { WeatherIcon } from "@shared/ui/WeatherIcon";
 import { FavoriteType } from "../types";
+import { Skeleton } from "@shared/ui/Skeleton";
 
 interface FavoriteCardProps {
   favorite: FavoriteType;
@@ -119,9 +120,15 @@ export const FavoriteCard = ({
       </header>
 
       {isLoading && (
-        <p role="status" className="text-gray-400 text-sm">
-          날씨 불러오는 중..
-        </p>
+        <div
+          className="text-center"
+          role="status"
+          aria-label="날씨 정보 로딩 중"
+        >
+          <Skeleton className="w-12 h-12 mx-auto rounded-lg" />
+          <Skeleton className="w-16 h-8 mx-auto mt-2" />
+          <Skeleton className="w-24 h-4 mx-auto mt-1" />
+        </div>
       )}
 
       {weather && (
