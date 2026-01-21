@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocationState } from "./useLocationState";
-import { useWeatherData } from "./useWeatherState";
+import { useWeatherState } from "./useWeatherState";
 import { useFavoriteState } from "./useFavoriteState";
 
 export const useWeatherDashboard = () => {
@@ -20,7 +20,7 @@ export const useWeatherDashboard = () => {
     forecast,
     isLoading: weatherLoading,
     isError,
-  } = useWeatherData({ coordinates });
+  } = useWeatherState({ coordinates });
 
   const {
     favorites,

@@ -2,11 +2,11 @@ import { useWeather } from "@features/weather/api/useWeather";
 import { useForecast } from "@features/weather/api/useForecast";
 import { CoordinatesType } from "@shared/types";
 
-interface UseWeatherDataParams {
+interface UseWeatherStateParams {
   coordinates: CoordinatesType | null;
 }
 
-export const useWeatherData = ({ coordinates }: UseWeatherDataParams) => {
+export const useWeatherState = ({ coordinates }: UseWeatherStateParams) => {
   const {
     data: weather,
     isLoading: weatherLoading,
