@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { AddFavoriteParams, FavoriteType } from "../types";
+import toast from "react-hot-toast";
 
 const LOCAL_STORAGE_KEY = "favorites";
 const MAX_FAVORITES = 6;
@@ -43,7 +44,6 @@ const saveFavorites = (newFavorites: FavoriteType[]) => {
   window.dispatchEvent(new Event("storage"));
 };
 
-// todo : 파일 내 alert 외부로 제거
 export const useFavorites = () => {
   const favorites = useSyncExternalStore(
     subscribe,
@@ -53,7 +53,7 @@ export const useFavorites = () => {
 
   const addFavorite = (location: AddFavoriteParams) => {
     if (favorites.length >= MAX_FAVORITES) {
-      alert("즐겨찾기는 최대 6개까지 가능합니다.");
+      toast.error("즐겨찾기는 최대 6개까지 가능합니다.");
       return;
     }
 
@@ -63,7 +63,7 @@ export const useFavorites = () => {
     );
 
     if (isDuplicate) {
-      alert("이미 즐겨찾기에 추가된 장소입니다.");
+      toast.error("이미 즐겨찾기에 추가된 장소입니다.");
       return;
     }
 
@@ -75,6 +75,7 @@ export const useFavorites = () => {
     };
 
     saveFavorites([...favorites, newFavorite]);
+    toast.success("즐겨찾기가 추가되었습니다.");
   };
 
   const removeFavorite = (id: string) => {
@@ -83,6 +84,7 @@ export const useFavorites = () => {
     );
 
     saveFavorites(filteredFavorites);
+    toast.success("즐겨찾기가 삭제되었습니다.");
   };
 
   const updateNickname = (id: string, nickname: string) => {
@@ -91,6 +93,7 @@ export const useFavorites = () => {
     );
 
     saveFavorites(filteredFavorites);
+    toast.success("즐겨찾기 이름이 수정되었습니다.");
   };
 
   const isFavorite = (lat: number, lng: number) => {
