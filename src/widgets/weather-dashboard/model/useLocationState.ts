@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGeolocation } from "@shared/lib/hooks/useGeolocation";
 import { useReverseGeocode } from "@features/location/api/useReverseGeocode";
 import { useCoordinates } from "@features/location/api/useCoordinates";
@@ -8,7 +8,11 @@ const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
 export const useLocationState = () => {
   const [searchAddress, setSearchAddress] = useState<string | null>(null);
 
-  const { lat, lng, isLoading: geoLoading } = useGeolocation();
+  const { lat, lng, isLoading: geoLoading, requestLocation } = useGeolocation();
+
+  useEffect(() => {
+    requestLocation();
+  }, [requestLocation]);
 
   const { data: reverseData } = useReverseGeocode(
     lat && lng ? { lat, lng } : null,
