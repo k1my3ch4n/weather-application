@@ -3,12 +3,16 @@ import { useGeolocation } from "@shared/lib/hooks/useGeolocation";
 import { useReverseGeocode } from "@features/location/api/useReverseGeocode";
 import { useCoordinates } from "@features/location/api/useCoordinates";
 
-const DEFAULT_ADDRESS = "서울특별시 강남구 역삼동";
-
 export const useLocationState = () => {
   const [searchAddress, setSearchAddress] = useState<string | null>(null);
 
-  const { lat, lng, isLoading: geoLoading, requestLocation } = useGeolocation();
+  const {
+    lat,
+    lng,
+    isLoading: geoLoading,
+    error: geoError,
+    requestLocation,
+  } = useGeolocation();
 
   useEffect(() => {
     requestLocation();
@@ -27,7 +31,7 @@ export const useLocationState = () => {
       return reverseData.address;
     }
 
-    return DEFAULT_ADDRESS;
+    return null;
   }, [searchAddress, reverseData?.address]);
 
   const { data: coords, isLoading: coordsLoading } =
@@ -45,11 +49,15 @@ export const useLocationState = () => {
 
   const isLocationLoading = !searchAddress && (geoLoading || reverseLoading);
 
+  const noDisplayAddress =
+    !searchAddress && !reverseData?.address && !!geoError;
+
   return {
     displayAddress,
     coords,
     coordinates,
     isLoading: isLocationLoading || coordsLoading,
+    noDisplayAddress,
     handleLocationSelect,
     handleFavoriteClick,
   };
