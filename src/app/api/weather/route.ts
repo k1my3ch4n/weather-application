@@ -11,12 +11,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { data } = await weatherServerApi.get("/weather", {
-      params: { lat, lon: lng },
-    });
+    const [weatherResponse, forecastResponse] = await Promise.all([
+      weatherServerApi.get("/weather", { params: { lat, lon: lng } }),
+      weatherServerApi.get("/forecast", { params: { lat, lon: lng } }),
+    ]);
 
-    const main = data?.main;
-    const weather = data?.weather?.[0];
+    const main = weatherResponse.data?.main;
+    const weather = weatherResponse.data?.weather?.[0];
 
     if (!main || !weather) {
       return NextResponse.json(
@@ -25,13 +26,34 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const today = new Date().toDateString();
+
+    const todayForecasts =
+      forecastResponse.data?.list?.filter((forecast: { dt: number }) => {
+        const forecastDate = new Date(forecast.dt * 1000).toDateString();
+
+        return forecastDate === today;
+      }) || [];
+
+    let tempMin = main.temp;
+    let tempMax = main.temp;
+
+    if (todayForecasts.length > 0) {
+      const temps = todayForecasts.map(
+        (forecast: { main: { temp: number } }) => forecast.main.temp,
+      );
+
+      tempMin = Math.min(...temps, main.temp);
+      tempMax = Math.max(...temps, main.temp);
+    }
+
     return NextResponse.json({
       temp: main.temp,
       feelsLike: main.feels_like,
       description: weather.description,
       icon: weather.icon,
-      tempMin: main.temp_min,
-      tempMax: main.temp_max,
+      tempMin,
+      tempMax,
     });
   } catch {
     return NextResponse.json(
