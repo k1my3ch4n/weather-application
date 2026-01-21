@@ -14,7 +14,7 @@ export const useLocationState = () => {
     requestLocation();
   }, [requestLocation]);
 
-  const { data: reverseData } = useReverseGeocode(
+  const { data: reverseData, isLoading: reverseLoading } = useReverseGeocode(
     lat && lng ? { lat, lng } : null,
   );
 
@@ -43,11 +43,13 @@ export const useLocationState = () => {
     setSearchAddress(nickname);
   };
 
+  const isLocationLoading = !searchAddress && (geoLoading || reverseLoading);
+
   return {
     displayAddress,
     coords,
     coordinates,
-    isLoading: geoLoading || coordsLoading,
+    isLoading: isLocationLoading || coordsLoading,
     handleLocationSelect,
     handleFavoriteClick,
   };
