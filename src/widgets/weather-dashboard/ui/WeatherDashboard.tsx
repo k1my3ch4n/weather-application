@@ -26,7 +26,7 @@ export const WeatherDashboard = () => {
 
   return (
     <div className="min-h-screen p-4 max-w-4xl mx-auto">
-      <div className="mb-6">
+      <section className="mb-6">
         {weather && displayAddress && (
           <CurrentWeather
             addressName={displayAddress}
@@ -40,14 +40,16 @@ export const WeatherDashboard = () => {
         )}
 
         {forecast && <HourlyForecast forecast={forecast} />}
-      </div>
+      </section>
 
-      <FavoriteList
-        favorites={favorites}
-        onRemove={removeFavorite}
-        onClick={handleFavoriteClick}
-        onUpdateNickname={updateNickname}
-      />
+      <aside aria-label="즐겨찾기 위치">
+        <FavoriteList
+          favorites={favorites}
+          onRemove={removeFavorite}
+          onClick={handleFavoriteClick}
+          onUpdateNickname={updateNickname}
+        />
+      </aside>
 
       <LocationSearchModal
         isOpen={isModalOpen}
