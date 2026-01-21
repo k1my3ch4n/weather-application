@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import toast from "react-hot-toast";
 
 interface GeolocationState {
   lat: number | null;
@@ -53,6 +54,8 @@ export const useGeolocation = () => {
             errorMessage = "위치 요청 시간이 초과되었습니다.";
             break;
         }
+
+        toast.error(errorMessage);
 
         setState({
           lat: null,
