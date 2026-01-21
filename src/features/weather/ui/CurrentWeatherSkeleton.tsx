@@ -10,7 +10,7 @@ export const CurrentWeatherSkeleton = () => {
       </header>
 
       <div className="text-center">
-        <Skeleton className="w-20 h-4 mx-auto mb-2" />
+        <Skeleton className="w-28 h-6 mx-auto mb-2" />
         <Skeleton className="w-24 h-24 mx-auto rounded-lg" />
         <Skeleton className="w-28 h-10 mx-auto mt-2" />
         <Skeleton className="w-40 h-4 mx-auto mt-2" />

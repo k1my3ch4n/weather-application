@@ -65,7 +65,7 @@ export const CurrentWeather = ({
       </header>
 
       <article className="text-center">
-        <time className="text-sm text-gray-500 mb-1">{today}</time>
+        <time className="text-lg text-gray-500 mb-1">{today}</time>
         <WeatherIcon
           icon={weather.icon}
           description={weather.description}
