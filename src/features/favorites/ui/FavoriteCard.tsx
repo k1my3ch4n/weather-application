@@ -56,17 +56,14 @@ export const FavoriteCard = ({
       onClick={() => onClick(addressName)}
       aria-label={`${nickname} 날씨 정보 보기`}
     >
-      <header className="flex items-center mb-2">
+      <header className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1">
           <IconButton
             icon="⭐"
-            onClick={(e) => {
-              e.stopPropagation();
-              onRemove(id);
-            }}
             variant="transparent"
             size="lg"
-            title="즐겨찾기 해제"
+            title="즐겨찾기"
+            disabled
           />
 
           {isEditing ? (
@@ -117,6 +114,17 @@ export const FavoriteCard = ({
             </div>
           )}
         </div>
+
+        <IconButton
+          icon="🗑️"
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove(id);
+          }}
+          variant="transparent"
+          size="md"
+          title="즐겨찾기 삭제"
+        />
       </header>
 
       {isLoading && (
