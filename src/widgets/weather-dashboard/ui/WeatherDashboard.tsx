@@ -28,7 +28,7 @@ export const WeatherDashboard = () => {
   } = useWeatherDashboard();
 
   return (
-    <div className="min-h-screen p-4 max-w-4xl mx-auto">
+    <div className="min-h-screen p-4 max-w-4xl mx-auto md:p-6 lg:p-8">
       <section className="mb-6">
         {isLoading && (
           <>

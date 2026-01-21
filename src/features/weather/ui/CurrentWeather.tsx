@@ -65,7 +65,7 @@ export const CurrentWeather = ({
       </header>
 
       <article className="text-center">
-        <time className="text-lg text-gray-500 mb-1">{today}</time>
+        <time className="text-base md:text-lg text-gray-500 mb-1">{today}</time>
         <WeatherIcon
           icon={weather.icon}
           description={weather.description}
@@ -73,7 +73,7 @@ export const CurrentWeather = ({
         />
         <p
           aria-label={`현재 기온 ${Math.round(weather.temp)}도`}
-          className="text-4xl font-bold"
+          className="text-3xl md:text-4xl font-bold"
         >
           {Math.round(weather.temp)}°C
         </p>
