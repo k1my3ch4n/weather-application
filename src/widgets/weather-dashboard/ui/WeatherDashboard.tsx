@@ -7,6 +7,7 @@ import { LocationSearchModal } from "@features/location/ui/LocationSearchModal";
 import { useWeatherDashboard } from "../model/useWeatherDashboard";
 import { CurrentWeatherSkeleton } from "@features/weather/ui/CurrentWeatherSkeleton";
 import { HourlyForecastSkeleton } from "@features/weather/ui/HourlyForecastSkeleton";
+import { EmptyLocation } from "@/features/location/ui/EmptyLocation";
 
 export const WeatherDashboard = () => {
   const {
@@ -18,6 +19,7 @@ export const WeatherDashboard = () => {
     isCurrentFavorite,
     isFull,
     isLoading,
+    noDisplayAddress,
     setIsModalOpen,
     handleLocationSelect,
     handleFavoriteClick,
@@ -35,6 +37,10 @@ export const WeatherDashboard = () => {
             <CurrentWeatherSkeleton />
             <HourlyForecastSkeleton />
           </>
+        )}
+
+        {!isLoading && noDisplayAddress && (
+          <EmptyLocation onSearchClick={() => setIsModalOpen(true)} />
         )}
 
         {!isLoading && weather && displayAddress && (
