@@ -142,7 +142,9 @@ export const FavoriteCard = ({
       {weather && (
         <section aria-label={`${nickname} 날씨`} className="text-center">
           <WeatherIcon icon={weather.icon} description={weather.description} />
-          <p className="text-3xl font-bold">{Math.round(weather.temp)}°C</p>
+          <p className="text-2xl md:text-3xl font-bold">
+            {Math.round(weather.temp)}°C
+          </p>
           <p className="text-xs text-gray-500 mt-1">
             <InfoLabel
               label="최저"
