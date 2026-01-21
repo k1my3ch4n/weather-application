@@ -17,10 +17,11 @@ export const ForecastItem = ({ item, isFirst = false }: ForecastItemProps) => {
 
   return (
     <li
+      aria-label={`${date ? `${date} ` : ""}${time}, ${Math.round(temp)}도`}
       className={`flex-shrink-0 text-center px-4 first:pl-0 last:pr-0 ${dividerStyle}`}
     >
       <p className="text-xs text-gray-700 font-bold h-4 mb-1">{date ?? ""}</p>
-      <p className="text-sm text-gray-500">{time}</p>
+      <time className="text-sm text-gray-500">{time}</time>
       <WeatherIcon icon={icon} description={description} />
       <p className="text-lg font-bold">{Math.round(temp)}°</p>
     </li>

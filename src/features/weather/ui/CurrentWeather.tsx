@@ -31,8 +31,8 @@ export const CurrentWeather = ({
   });
 
   return (
-    <div>
-      <div className="flex items-center gap-2 mb-3">
+    <section aria-labelledby="current-weather-title">
+      <header className="flex items-center gap-2 mb-3">
         {isFavorite ? (
           <IconButton
             icon="⭐"
@@ -51,7 +51,9 @@ export const CurrentWeather = ({
             title={isFull ? "즐겨찾기 최대 6개" : "즐겨찾기 추가"}
           />
         )}
-        <h1 className="text-xl font-semibold">{addressName}</h1>
+        <h1 id="current-weather-title" className="text-xl font-semibold">
+          {addressName}
+        </h1>
 
         <IconButton
           icon="🔍"
@@ -60,16 +62,21 @@ export const CurrentWeather = ({
           size="sm"
           title="위치 검색"
         />
-      </div>
+      </header>
 
-      <div className="text-center">
-        <p className="text-sm text-gray-500 mb-1">{today}</p>
+      <article className="text-center">
+        <time className="text-sm text-gray-500 mb-1">{today}</time>
         <WeatherIcon
           icon={weather.icon}
           description={weather.description}
           size="lg"
         />
-        <p className="text-4xl font-bold">{Math.round(weather.temp)}°C</p>
+        <p
+          aria-label={`현재 기온 ${Math.round(weather.temp)}도`}
+          className="text-4xl font-bold"
+        >
+          {Math.round(weather.temp)}°C
+        </p>
         <p className="text-sm text-gray-500 mt-1">
           <InfoLabel
             label="최저"
@@ -89,7 +96,7 @@ export const CurrentWeather = ({
             size="lg"
           />
         </p>
-      </div>
-    </div>
+      </article>
+    </section>
   );
 };

@@ -14,9 +14,18 @@ export const InfoLabel = ({ label, value, size = "md" }: InfoLabelProps) => {
   const styles = sizeStyles[size];
 
   return (
-    <span className={`${styles.label} text-gray-500`}>
-      {label}{" "}
-      <span className={`${styles.value} text-gray-700 font-bold`}>{value}</span>
+    <span
+      role="group"
+      aria-label={`${label} ${value}`}
+      className={`${styles.label} text-gray-500`}
+    >
+      <span aria-hidden="true">{label} </span>
+      <span
+        className={`${styles.value} text-gray-700 font-bold`}
+        aria-hidden="true"
+      >
+        {value}
+      </span>
     </span>
   );
 };
