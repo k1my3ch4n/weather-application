@@ -5,6 +5,8 @@ import { HourlyForecast } from "@features/weather/ui/HourlyForecast";
 import { FavoriteList } from "@features/favorites/ui/FavoriteList";
 import { LocationSearchModal } from "@features/location/ui/LocationSearchModal";
 import { useWeatherDashboard } from "../model/useWeatherDashboard";
+import { CurrentWeatherSkeleton } from "@features/weather/ui/CurrentWeatherSkeleton";
+import { HourlyForecastSkeleton } from "@features/weather/ui/HourlyForecastSkeleton";
 
 export const WeatherDashboard = () => {
   const {
@@ -15,6 +17,7 @@ export const WeatherDashboard = () => {
     isModalOpen,
     isCurrentFavorite,
     isFull,
+    isLoading,
     setIsModalOpen,
     handleLocationSelect,
     handleFavoriteClick,
@@ -27,7 +30,14 @@ export const WeatherDashboard = () => {
   return (
     <div className="min-h-screen p-4 max-w-4xl mx-auto">
       <section className="mb-6">
-        {weather && displayAddress && (
+        {isLoading && (
+          <>
+            <CurrentWeatherSkeleton />
+            <HourlyForecastSkeleton />
+          </>
+        )}
+
+        {!isLoading && weather && displayAddress && (
           <CurrentWeather
             addressName={displayAddress}
             weather={weather}
