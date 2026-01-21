@@ -1,7 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,6 +9,11 @@ const queryClient = new QueryClient({
       staleTime: 5 * 60 * 1000,
       gcTime: 30 * 60 * 1000,
       retry: false,
+    },
+    mutations: {
+      onError: (error) => {
+        toast.error(`요청에 실패했습니다 : ${error?.message}`);
+      },
     },
   },
 });
