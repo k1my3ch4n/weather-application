@@ -19,7 +19,7 @@ export const FavoriteList = ({
   return (
     <section aria-labelledby="favorites-title" className="border-t pt-4">
       <h2 id="favorites-title" className="text-lg font-bold">
-        즐겨찾기{" "}
+        📙 즐겨찾기{" "}
         <span className="text-base font-normal">
           ( {favorites.length} / 6 )
         </span>
