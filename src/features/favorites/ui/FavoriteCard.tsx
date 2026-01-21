@@ -39,12 +39,23 @@ export const FavoriteCard = ({
     setIsEditing(false);
   };
 
+  const handleChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditValue(e.target.value);
+  };
+
+  const handleSummit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleUpdateNickname();
+  };
+
   return (
-    <div
+    <article
       className="rounded-xl p-3 bg-white shadow-lg hover:shadow-xl transition-shadow"
+      role="button"
       onClick={() => onClick(addressName)}
+      aria-label={`${nickname} 날씨 정보 보기`}
     >
-      <div className="flex items-center mb-2">
+      <header className="flex items-center mb-2">
         <div className="flex items-center gap-1">
           <IconButton
             icon="⭐"
@@ -58,11 +69,12 @@ export const FavoriteCard = ({
           />
 
           {isEditing ? (
-            <div className="flex items-center gap-1">
+            <form className="flex items-center gap-1" onSubmit={handleSummit}>
               <input
+                id={`${nickname}-${id}`}
                 type="text"
                 value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
+                onChange={handleChangeNickname}
                 onClick={(e) => e.stopPropagation()}
                 className="px-2 py-1 text-sm border rounded text-black"
                 autoFocus
@@ -85,7 +97,7 @@ export const FavoriteCard = ({
                 variant="danger"
                 title="취소"
               />
-            </div>
+            </form>
           ) : (
             <div className="flex items-center gap-1">
               <h3 className="font-semibold truncate leading-none">
@@ -104,12 +116,16 @@ export const FavoriteCard = ({
             </div>
           )}
         </div>
-      </div>
+      </header>
 
-      {isLoading && <p className="text-gray-400 text-sm">날씨 불러오는 중..</p>}
+      {isLoading && (
+        <p role="status" className="text-gray-400 text-sm">
+          날씨 불러오는 중..
+        </p>
+      )}
 
       {weather && (
-        <div className="text-center">
+        <section aria-label={`${nickname} 날씨`} className="text-center">
           <WeatherIcon icon={weather.icon} description={weather.description} />
           <p className="text-3xl font-bold">{Math.round(weather.temp)}°C</p>
           <p className="text-xs text-gray-500 mt-1">
@@ -125,8 +141,8 @@ export const FavoriteCard = ({
               size="sm"
             />
           </p>
-        </div>
+        </section>
       )}
-    </div>
+    </article>
   );
 };
