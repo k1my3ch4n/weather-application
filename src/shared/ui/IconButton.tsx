@@ -14,10 +14,10 @@ const variantStyles = {
 };
 
 const sizeStyles = {
-  sm: "w-6 h-6 text-xs",
-  md: "w-7 h-7 text-sm",
-  lg: "w-8 h-8 text-base",
-  xl: "w-10 h-10 text-lg",
+  sm: "w-8 h-8 text-xs",
+  md: "w-9 h-9 text-sm",
+  lg: "w-10 h-10 text-base",
+  xl: "w-11 h-11 text-lg",
 };
 
 export const IconButton = ({
