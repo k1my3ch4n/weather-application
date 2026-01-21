@@ -11,6 +11,7 @@ export const useWeatherDashboard = () => {
     coords,
     coordinates,
     isLoading: locationLoading,
+    noDisplayAddress,
     handleLocationSelect,
     handleFavoriteClick,
   } = useLocationState();
@@ -42,6 +43,7 @@ export const useWeatherDashboard = () => {
     isFull,
     isError,
     isLoading: locationLoading || weatherLoading,
+    noDisplayAddress,
     setIsModalOpen,
     handleLocationSelect,
     handleFavoriteClick,
