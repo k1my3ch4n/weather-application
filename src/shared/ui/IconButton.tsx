@@ -29,8 +29,10 @@ export const IconButton = ({
 }: IconButtonProps) => {
   return (
     <button
+      type="button"
       className={`flex items-center justify-center rounded-md transition-colors ${variantStyles[variant]} ${sizeStyles[size]}`}
       title={title}
+      aria-label={title}
       {...props}
     >
       {icon}
